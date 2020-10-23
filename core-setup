@@ -45,6 +45,7 @@ sudo apt install -y ros-melodic-perception ros-melodic-urdf-tutorials ros-melodi
 sudo apt install -y ros-melodic-warehouse-ros ros-melodic-warehouse-ros-mongo
 sudo apt install -y ros-melodic-openni-camera ros-melodic-openni-launch ros-melodic-openni2-camera ros-melodic-openni2-launch
 sudo apt install -y pcl-tools
+sudo apt-get install -y ros-melodic-trac-ik-kinematics-plugin
 
 # ROS2 install
 sudo apt install -y ros-dashing-desktop
