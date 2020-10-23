@@ -13,7 +13,8 @@ Transfer the bash shell script into the system's folder system. Suggest placing 
 <li>2. Make bash script executable<br>
     <code>sudo chmod +x FILE-NAME.sh</code>
 <li>3. Run bash script!<br>
-    <code>sudo FOLDER-PATH/FILE-NAME.sh</code>
+    <code>FOLDER-PATH/FILE-NAME.sh</code>
+    <br> DO NOT RUN THIS WITH SUDO! Will cause an error when setting up the ROS path.
   
 This bash script may take between 10-20 minutes to run.
 
