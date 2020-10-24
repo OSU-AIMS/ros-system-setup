@@ -86,9 +86,14 @@ rm $QTFILE
 
 # ##############################################################################
 # Update ~/.bashrc file to source the ROS melodic environment
-echo "source /./opt/ros/melodic/setup.bash" >> ~/.bashrc
+echo "# ROS ALIAS: " >> ~/.bashrc
+echo "alias ros1='source /./opt/ros/melodic/setup.bash' " >> ~/.bashrc
+echo "alias ros2='source /./opt/ros/eloquent/setup.bash' " >> ~/.bashrc
+echo "export ROSCONSOLE_FORMAT='[${severity}] [${time}] [${node}] [${logger}]: ${message}' " >> ~/.bashrc
 source ~/.bashrc
 
+# Intialize to ROS1
+source /./opt/ros/melodic/setup.bash
 
 # ##############################################################################
 # First Run of ROS Setup Things
