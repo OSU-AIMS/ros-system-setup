@@ -5,6 +5,14 @@ sudo apt install -y curl gnupg2 lsb-release git meld build-essential libfontconf
 
 cd $HOME
 
+# Set Default AIMS System Settings
+#background="/background.jpg"
+#gsettings set org.gnome.desktop.background picture-uri file://$PWD$background
+#
+#newicon="/user_avatar.png"
+#icon=`echo $(ls /var/lib/AccountsService/icons)`
+#iconpath=$(realpath /var/lib/AccountsService/icons/$icon)
+#sudo cp $PWD$newicon $iconpath
 
 # ##############################################################################
 # Uninstall Unneeded Default Programs
