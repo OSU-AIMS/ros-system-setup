@@ -49,11 +49,13 @@ sudo apt update -y
 # ROS1 install
 sudo apt install -y ros-melodic-desktop
 sudo apt install -y python-wstool python-catkin-tools
-sudo apt install -y ros-melodic-moveit ros-melodic-moveit-visual-tools
+sudo apt install -y ros-melodic-moveit
+sudo apt install -y ros-melodic-moveit-visual-tools
 sudo apt install -y ros-melodic-perception
 sudo apt install -y ros-melodic-warehouse-ros ros-melodic-warehouse-ros-mongo
 sudo apt install -y pcl-tools
 sudo apt-get install -y ros-melodic-trac-ik-kinematics-plugin
+sudo apt install -y ros-melodic-industrial-core
 
 # ROS2 install
 sudo apt install -y ros-dashing-desktop
@@ -106,7 +108,7 @@ source /./opt/ros/melodic/setup.bash
 # ##############################################################################
 # First Run of ROS Setup Things
 # Install rosdep
-sudo apt-get install -y python-rosdep
+sudo apt install -y python-rosdep
 sudo rosdep init
 rosdep update
 
