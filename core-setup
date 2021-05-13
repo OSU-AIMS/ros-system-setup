@@ -49,9 +49,9 @@ sudo apt update -y
 # ROS1 install
 sudo apt install -y ros-melodic-desktop
 sudo apt install -y python-wstool python-catkin-tools
-sudo apt install -y ros-melodic-perception ros-melodic-urdf-tutorials ros-melodic-moveit
+sudo apt install -y ros-melodic-moveit ros-melodic-moveit-visual-tools
+sudo apt install -y ros-melodic-perception
 sudo apt install -y ros-melodic-warehouse-ros ros-melodic-warehouse-ros-mongo
-sudo apt install -y ros-melodic-openni-camera ros-melodic-openni-launch ros-melodic-openni2-camera ros-melodic-openni2-launch
 sudo apt install -y pcl-tools
 sudo apt-get install -y ros-melodic-trac-ik-kinematics-plugin
 
