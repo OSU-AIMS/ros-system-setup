@@ -57,6 +57,8 @@ sudo apt install -y pcl-tools
 sudo apt-get install -y ros-melodic-trac-ik-kinematics-plugin
 sudo apt install -y ros-melodic-industrial-core
 
+sudo apt-get install -y ros-melodic-image-publisher
+
 # ROS2 install
 sudo apt install -y ros-dashing-desktop
 sudo apt install -y python3-colcon-common-extensions python3-argcomplete
