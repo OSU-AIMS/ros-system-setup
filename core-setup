@@ -1,9 +1,9 @@
 #! /bin/bash
-sudo apt update -y
-sudo apt upgrade -y
-sudo apt install -y curl gnupg2 lsb-release git meld build-essential libfontconfig1 mesa-common-dev libglu1-mesa-dev
 
 cd $HOME
+sudo apt-get update
+sudo apt update
+sudo apt upgrade -y
 
 # Set Default AIMS System Settings
 #background="/background.jpg"
@@ -14,16 +14,42 @@ cd $HOME
 #iconpath=$(realpath /var/lib/AccountsService/icons/$icon)
 #sudo cp $PWD$newicon $iconpath
 
-# ##############################################################################
-# Uninstall Unneeded Default Programs
-sudo apt-get -y purge gnome-games gnome-games-common
 
-sudo apt-get -y purge aisleriot gnome-mahjongg gnome-mines gnome-sudoku
-sudo apt-get -y purge simple-scan gnome-todo
-sudo apt -y autoremove
+# ##############################################################################
+# Uninstall Non-Essential Pre-Packaged Programs
+sudo apt-get -y purge \
+  gnome-games \
+  aisleriot \
+  gnome-mahjongg \
+  gnome-mines \
+  gnome-sudoku
+sudo apt-get -y purge \
+  simple-scan \
+  gnome-todo
 
 #sudo apt purge rhythmbox rhythmbox-data rhythmbox-plugin-alternative-toolbar rhythmbox-plugins
 #sudo apt purge remmina remmina-common remmina-plugin-rdp remmina-plugin-secret remmina-plugin-vnc
+
+sudo apt-get -y purge \
+  thunderbird \
+  thunderbird-locale-en \
+  thunderbird-gnome-support \
+  thunderbird-locale-en-us
+
+sudo apt -y autoremove
+
+# ##############################################################################
+# Install System Tools & Libraries 
+sudo apt install -y \
+  curl \
+  gnupg2 \
+  lsb-release \
+  git \
+  meld \
+  build-essential \
+  libfontconfig1 \
+  mesa-common-dev \
+  libglu1-mesa-dev
 
 
 # ##############################################################################
@@ -36,6 +62,8 @@ sudo apt-get install tree
 sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
+
+# ##############################################################################
 # ROS2 packages source
 sudo locale-gen en_US en_US.UTF-8
 sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
@@ -43,7 +71,8 @@ export LANG=en_US.UTF-8
 curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 sudo sh -c 'echo "deb [arch=amd64,arm64] http://packages.ros.org/ros2/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-latest.list'
 
-sudo apt update -y
+sudo apt-get update
+sudo apt update
 
 # ##############################################################################
 # ROS1 install
@@ -59,15 +88,19 @@ sudo apt install -y ros-melodic-industrial-core
 
 sudo apt-get install -y ros-melodic-image-publisher
 
+
+# ##############################################################################
 # ROS2 install
 sudo apt install -y ros-dashing-desktop
 sudo apt install -y python3-colcon-common-extensions python3-argcomplete
+
 
 # ##############################################################################
 # Install ROS Industrial
 sudo apt-get install ros-melodic-industrial-core
 sudo apt-get install ros-melodic-joint-state-publisher-gui
 
+  
 # ##############################################################################
 # Install Gazebo 9 for ROS w/ packages
 sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
@@ -114,5 +147,11 @@ sudo apt install -y python-rosdep
 sudo rosdep init
 rosdep update
 
+
+# ##############################################################################
+# Final Cleanup
 sudo apt-get update
 sudo apt update
+sudo apt upgrade -y
+sudo apt -y autoremove
+
