@@ -47,6 +47,7 @@ sudo apt-get -y purge \
 
 sudo apt -y autoremove
 
+
 # ##############################################################################
 # Install System Tools & Libraries 
 sudo apt install -y \
@@ -67,89 +68,95 @@ sudo apt-get install tree
 
 
 # ##############################################################################
-# ROS1 packages source   ...if using a proxy server may need to use curl. see ROS webpage install instructions
+# Install Python tools commonly used by AIMS
+# Todo: Determine where to install these packages.
+#sudo apt install -y python3-pip
+#python3 -m pip install -U \
+#  tqdm \
+#  numpy \
+#  opencv-python
+
+
+# ##############################################################################
+# ROS1 packages source
 sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 
 
 # ##############################################################################
 # ROS2 packages source
-curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
-sudo sh -c 'echo "deb [arch=amd64,arm64] http://packages.ros.org/ros2/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-latest.list'
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key  -o /usr/share/keyrings/ros-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
 
 sudo apt-get update
 sudo apt update
 
+
 # ##############################################################################
 # ROS1 install
-sudo apt install -y ros-melodic-desktop
-sudo apt install -y python-wstool python-catkin-tools
-sudo apt install -y ros-melodic-moveit
-sudo apt install -y ros-melodic-moveit-visual-tools
-sudo apt install -y ros-melodic-perception
-sudo apt install -y ros-melodic-warehouse-ros ros-melodic-warehouse-ros-mongo
-sudo apt install -y pcl-tools
-sudo apt-get install -y ros-melodic-trac-ik-kinematics-plugin
-sudo apt install -y ros-melodic-industrial-core
+# Note: the "industrial_core" package has not released a debian package, but it may be built manually.
+sudo apt install -y ros-noetic-desktop
+sudo apt install -y ros-noetic-catkin python3-catkin-tools python3-osrf-pycommon
+sudo apt install -y python3-wstool
 
-sudo apt-get install -y ros-melodic-image-publisher
+sudo apt install -y ros-noetic-moveit
+sudo apt install -y ros-noetic-moveit-visual-tools
+sudo apt install -y ros-noetic-perception
+sudo apt install -y ros-noetic-warehouse-ros ros-noetic-warehouse-ros-mongo
+sudo apt install -y pcl-tools
+sudo apt install -y ros-noetic-trac-ik-kinematics-plugin
+
+sudo apt install -y ros-noetic-image-publisher
 
 
 # ##############################################################################
 # ROS2 install
-sudo apt install -y ros-dashing-desktop
-sudo apt install -y python3-colcon-common-extensions python3-argcomplete
+sudo apt install -y ros-foxy-desktop
+sudo apt install -y ros-foxy-moveit
+sudo apt install -y ros-foxy-image-publisher
 
 
 # ##############################################################################
-# Install ROS Industrial
-sudo apt-get install ros-melodic-industrial-core
-sudo apt-get install ros-melodic-joint-state-publisher-gui
+# Install ROS Industrial Specific Packages
+# w/ PID Controllers for Robot Simulation
 
+sudo apt-get install \
+  ros-noetic-joint-state-publisher \
+  ros-noetic-joint-state-publisher-gui \
+  ros-noetic-position-controllers \
+  ros-noetic-joint-state-controller
+  
+sudo apt-get install \
+  ros-foxy-joint-state-publisher \
+  ros-foxy-joint-state-publisher-gui \
+  ros-foxy-joint-state-controller \
+  ros-foxy-position-controllers
+  
   
 # ##############################################################################
-# Install Gazebo 9 for ROS w/ packages
-sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
-cat /etc/apt/sources.list.d/gazebo-stable.list
-wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
+# Install Gazebo for ROS w/ packages
 
-sudo apt-get update
-
-sudo apt-get install -y gazebo9
-sudo apt-get install -y ros-melodic-gazebo-ros
-sudo apt-get install -y ros-melodic-gazebo-ros-pkgs ros-melodic-gazebo-ros-control
-
-# PID Controllers for Robot Simulation
-sudo apt-get install -y ros-melodic-position-controllers
-sudo apt-get install -y ros-melodic-joint-state-controller
-# sudo apt-get install ros-indigo-effort-controllers
 
 
 # ##############################################################################
 # Install Qt Creator with ROS plugin
-# NOTE: no way (yet?) to do headless QT IFW install.  Do this last, but will require user action
-QTFILE=qtcreator-ros-bionic-latest-online-installer.run
-wget -q https://qtcreator-ros.datasys.swri.edu/downloads/installers/bionic/$QTFILE
-chmod u+x $QTFILE
-./$QTFILE
-rm $QTFILE
+# https://ros-qtc-plugin.readthedocs.io/en/latest/_source/Improve-ROS-Qt-Creator-Plugin-Developers-ONLY.html
 
 
 # ##############################################################################
 # Update ~/.bashrc file to source the ROS melodic environment
 echo "# ROS ALIAS: " >> ~/.bashrc
-echo "alias ros1='source /./opt/ros/melodic/setup.bash' " >> ~/.bashrc
-echo "alias ros2='source /./opt/ros/eloquent/setup.bash' " >> ~/.bashrc
+echo "alias ros1-noetic='source /./opt/ros/noetic/setup.bash' " >> ~/.bashrc
+echo "alias ros2-foxy='source /./opt/ros/foxy/setup.bash' " >> ~/.bashrc
 #echo "export ROSCONSOLE_FORMAT='[${severity}] [${time}] [${node}] [${logger}]: ${message}' " >> ~/.bashrc
 source ~/.bashrc
 
-# Intialize to ROS1
-source /./opt/ros/melodic/setup.bash
 
 # ##############################################################################
 # First Run of ROS Setup Things
 # Install rosdep
-sudo apt install -y python-rosdep
+sudo apt install -y python3-rosdep
 sudo rosdep init
 rosdep update
 
