@@ -121,13 +121,13 @@ sudo apt install -y ros-foxy-image-publisher
 # Install ROS Industrial Specific Packages
 # w/ PID Controllers for Robot Simulation
 
-sudo apt-get install \
+sudo apt-get install -y \
   ros-noetic-joint-state-publisher \
   ros-noetic-joint-state-publisher-gui \
   ros-noetic-position-controllers \
   ros-noetic-joint-state-controller
   
-sudo apt-get install \
+sudo apt-get install -y \
   ros-foxy-joint-state-publisher \
   ros-foxy-joint-state-publisher-gui \
   ros-foxy-joint-state-controller \
