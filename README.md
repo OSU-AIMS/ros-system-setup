@@ -13,7 +13,7 @@ Transfer the bash shell script into the system's folder system. Suggest placing 
 2. Make bash script executable<br>
     <code>sudo chmod +x $HOME/core-setup</code>
 3. Run bash script!<br>
-    <code>$HOME/core-setup</code>
+    <code>source $HOME/core-setup</code>
     <br> DO NOT RUN THIS WITH SUDO! Will cause an error when setting up the ROS path.
 
 
