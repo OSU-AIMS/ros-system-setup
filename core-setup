@@ -63,6 +63,11 @@ sudo apt install -y \
 
 
 # ##############################################################################
+# Install Support Library for Pulse Secure VPN (used by Ohio State)
+ sudo apt install -y network-manager-openconnect-gnome
+
+
+# ##############################################################################
 # Useful tools
 sudo apt-get install tree
 
