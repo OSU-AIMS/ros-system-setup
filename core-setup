@@ -113,6 +113,9 @@ sudo apt install -y ros-noetic-trac-ik-kinematics-plugin
 
 sudo apt install -y ros-noetic-image-publisher
 
+sudo apt install -y ros-noetic-realsense2-camera
+sudo apt install -y ros-noetic-realsense2-description
+
 
 # ##############################################################################
 # ROS2 install
