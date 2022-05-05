@@ -154,6 +154,11 @@ sudo apt-get install -y \
 
 
 # ##############################################################################
+# Additional ROS Related Tools
+sudo apt-get install -y python3-vcstool
+
+
+# ##############################################################################
 # Update ~/.bashrc file to source the ROS melodic environment
 echo "# ROS ALIAS: " >> ~/.bashrc
 echo "alias ros1-noetic='source /./opt/ros/noetic/setup.bash' " >> ~/.bashrc
