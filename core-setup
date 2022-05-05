@@ -135,6 +135,7 @@ sudo apt-get install -y \
   ros-noetic-joint-state-publisher-gui \
   ros-noetic-position-controllers \
   ros-noetic-joint-state-controller
+  ros-noetic-ros-industrial-cmake-boilerplate
   
 sudo apt-get install -y \
   ros-foxy-joint-state-publisher \
