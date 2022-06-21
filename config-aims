@@ -1,0 +1,25 @@
+#! /bin/bash
+
+# Set Default AIMS System Settings
+#background="/background.jpg"
+#gsettings set org.gnome.desktop.background picture-uri file://$PWD$background
+#
+#newicon="/user_avatar.png"
+#icon=`echo $(ls /var/lib/AccountsService/icons)`
+#iconpath=$(realpath /var/lib/AccountsService/icons/$icon)
+#sudo cp $PWD$newicon $iconpath
+
+
+# ##############################################################################
+# Install Support Library for Pulse Secure VPN (used by Ohio State)
+ sudo apt install -y network-manager-openconnect-gnome
+
+
+# ##############################################################################
+# Install Python tools commonly used by AIMS
+# Todo: Determine where to install these packages.
+#sudo apt install -y python3-pip
+#python3 -m pip install -U \
+#  tqdm \
+#  numpy \
+#  opencv-python
