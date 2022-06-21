@@ -1,39 +1,32 @@
-# ros-system-setup
+# ROS Setup Shell Scripts
 
-Designed for **Ubuntu Focal 20.04**
+Includes setup shell scripts for multiple Operating Systems and ROS versions.
 
-This procedure is maintained for standard usage by the AIMS Lab and partners. After a new desktop install of Ubuntu, this script will install and configure the ROS middleware and dependencies. Details of the shell script’s procedure are documented by script comments.
+| Script Name | OS Version | ROS Versions Installed | Support Level |
+| ----------- | ---------- | ---------------------- | ------------- |
+| [setup-jammy](/setup-jammy) | Ubuntu 18.04 | ROS 1 Melodic        | EOL |
+| [setup-focal](/setup-focal) | Ubuntu 20.04 | ROS 1 Noetic<br>ROS 2 Foxy | Fully Supported |
+| [setup-bionic](/setup-bionic)| Ubuntu 22.04 | ROS 2 Humble         | Under Development |
+
+This procedure is maintained for standard usage by the AIMS Lab and partners. This script will install and configure the ROS middleware and dependencies. Details of the shell script’s procedure are documented by script comments.
 
 
 ### Usage Instructions
-Transfer the bash shell script into the system's folder system. Suggest placing this in `$HOME`.
 
-1. Open a new Terminal. Navigate to appropriate file path. <br>
+1. Download this repo using the green "CODE 🔽" button and clicking "Download ZIP". Save this folder in the `$HOME` directory (linux).
+2. Open a new Terminal. Navigate to appropriate file path. <br>
   <code>cd $HOME</code>
-2. Make bash script executable<br>
+2. Make the bash script executable<br>
     <code>sudo chmod +x $HOME/core-setup</code>
 3. Run bash script!<br>
-    <code>source $HOME/core-setup</code>
+    <code>sh $HOME/setup-<os-codename></code>
     <br> DO NOT RUN THIS WITH SUDO! Will cause an error when setting up the ROS path.
+    <br> You may be prompted for a sudo password (even if not run with sudo). Go ahead and enter password then continue.
 
 
 ### Check Install
-Command                | Expected Output
----------------------- | -------------------
-<code>printenv &#124; grep ROS</code>  | A list of variables
-`roswtf`               | “No errors or warnings”
-`roscore`              | Regular launch output
-
-
-### Added BASH Commands
-Command         | Action
---------------- | -------------------
-`ros1-noetic`   | Source ROS Melodic for local terminal
-`ros2-foxy`     | Source ROS Eloquent for local terminal
-
-
-### Debugging Hints
-Use roslaunch option `--screen` to show all action lines.
-<br>Use bash alias command `rosdebug` to show which module caused the error.
-
-
+Command                | Expected Output |
+---------------------- | ------------------- |
+<code>printenv &#124; grep ROS</code>  | A list of variables |
+ROS1: `roswtf` <br>ROS2: `ros2 wtf`               | “No errors or warnings” |
+ROS1: `roscore`              | Regular launch output. <br> No ROS2 equivalent. |
