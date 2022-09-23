@@ -13,6 +13,9 @@
 MY_OSTYPE="linux-gnu"
 MY_OS="Ubuntu"
 MY_VER="20.04"
+ROS1_DISTRO="foxy"
+ROS2_DISTRO="noetic"
+IGNITION_VER="fortress"
 
 
 ## Support Methods
@@ -101,64 +104,64 @@ setup_ros_source() {
 }
 
 
-install_ros1_noetic() {
+install_ros1() {
 
-	sudo apt-get install -y ros-noetic-desktop
-	sudo apt-get install -y ros-noetic-catkin
+	sudo apt-get install -y ros-$ROS2_DISTRO-desktop
+	sudo apt-get install -y ros-$ROS2_DISTRO-catkin
 
-	sudo apt-get install -y ros-noetic-perception
-	sudo apt-get install -y ros-noetic-moveit
-	sudo apt-get install -y ros-noetic-moveit-visual-tools
+	sudo apt-get install -y ros-$ROS2_DISTRO-perception
+	sudo apt-get install -y ros-$ROS2_DISTRO-moveit
+	sudo apt-get install -y ros-$ROS2_DISTRO-moveit-visual-tools
 
-	sudo apt-get install -y ros-noetic-warehouse-ros
-	sudo apt-get install -y ros-noetic-warehouse-ros-mongo
+	sudo apt-get install -y ros-$ROS2_DISTRO-warehouse-ros
+	sudo apt-get install -y ros-$ROS2_DISTRO-warehouse-ros-mongo
 
-	sudo apt-get install -y ros-noetic-image-publisher
-	sudo apt-get install -y ros-noetic-realsense2-camera
-	sudo apt-get install -y ros-noetic-realsense2-description
+	sudo apt-get install -y ros-$ROS2_DISTRO-image-publisher
+	sudo apt-get install -y ros-$ROS2_DISTRO-realsense2-camera
+	sudo apt-get install -y ros-$ROS2_DISTRO-realsense2-description
 
-	sudo apt-get install -y ros-noetic-trac-ik-kinematics-plugin
+	sudo apt-get install -y ros-$ROS2_DISTRO-trac-ik-kinematics-plugin
 	sudo apt-get install -y pcl-tools
 
-	sudo apt-get install -y ros-noetic-industrial-core
-	sudo apt-get install -y ros-noetic-ros-industrial-cmake-boilerplate
+	sudo apt-get install -y ros-$ROS2_DISTRO-industrial-core
+	sudo apt-get install -y ros-$ROS2_DISTRO-ros-industrial-cmake-boilerplate
 
-	sudo apt-get install -y ros-noetic-ros-controllers
-	sudo apt-get install -y ros-noetic-position-controllers
-	sudo apt-get install -y ros-noetic-joint-state-controller
-	sudo apt-get install -y ros-noetic-joint-state-publisher
-	sudo apt-get install -y ros-noetic-joint-state-publisher-gui
-	sudo apt-get install -y ros-noetic-moveit-simple-controller-manager
+	sudo apt-get install -y ros-$ROS2_DISTRO-ros-controllers
+	sudo apt-get install -y ros-$ROS2_DISTRO-position-controllers
+	sudo apt-get install -y ros-$ROS2_DISTRO-joint-state-controller
+	sudo apt-get install -y ros-$ROS2_DISTRO-joint-state-publisher
+	sudo apt-get install -y ros-$ROS2_DISTRO-joint-state-publisher-gui
+	sudo apt-get install -y ros-$ROS2_DISTRO-moveit-simple-controller-manager
 }
 
 
-install_ros2_foxy() {
+install_ros2() {
 
-	sudo apt-get install -y ros-foxy-desktop
+	sudo apt-get install -y ros-$ROS1_DISTRO-desktop
 	sudo apt-get install -y python3-colcon-common-extensions
 	sudo apt-get install -y python3-argcomplete
-	sudo apt-get install -y ros-foxy-ros-testing	
-	sudo apt-get install -y ros-foxy-ros1-bridge
+	sudo apt-get install -y ros-$ROS1_DISTRO-ros-testing	
+	sudo apt-get install -y ros-$ROS1_DISTRO-ros1-bridge
 	
-	sudo apt-get install -y ros-foxy-xacro
-	sudo apt-get install -y ros-foxy-moveit
-	sudo apt-get install -y ros-foxy-octomap-ros
+	sudo apt-get install -y ros-$ROS1_DISTRO-xacro
+	sudo apt-get install -y ros-$ROS1_DISTRO-moveit
+	sudo apt-get install -y ros-$ROS1_DISTRO-octomap-ros
 
 
-	sudo apt-get install -y ros-foxy-image-publisher
-	sudo apt-get install -y ros-foxy-realsense2-camera
-	sudo apt-get install -y ros-foxy-realsense2-description
+	sudo apt-get install -y ros-$ROS1_DISTRO-image-publisher
+	sudo apt-get install -y ros-$ROS1_DISTRO-realsense2-camera
+	sudo apt-get install -y ros-$ROS1_DISTRO-realsense2-description
 	
-	sudo apt-get install -y ros-foxy-ros-industrial-cmake-boilerplate
+	sudo apt-get install -y ros-$ROS1_DISTRO-ros-industrial-cmake-boilerplate
 	  
-	sudo apt-get install -y ros-foxy-ros2-control
-	sudo apt-get install -y ros-foxy-ros2-controllers
-	sudo apt-get install -y ros-foxy-joint-state-publisher
-	sudo apt-get install -y ros-foxy-joint-state-publisher-gui
-	sudo apt-get install -y ros-foxy-joint-state-controller
-	sudo apt-get install -y ros-foxy-position-controllers
+	sudo apt-get install -y ros-$ROS1_DISTRO-ros2-control
+	sudo apt-get install -y ros-$ROS1_DISTRO-ros2-controllers
+	sudo apt-get install -y ros-$ROS1_DISTRO-joint-state-publisher
+	sudo apt-get install -y ros-$ROS1_DISTRO-joint-state-publisher-gui
+	sudo apt-get install -y ros-$ROS1_DISTRO-joint-state-controller
+	sudo apt-get install -y ros-$ROS1_DISTRO-position-controllers
 	
-	sudo apt-get install -y ros-foxy-ifopt
+	sudo apt-get install -y ros-$ROS1_DISTRO-ifopt
 }
 	
 
@@ -205,20 +208,20 @@ main() {
 	## Run Installer	
 	install_system_tools
 	setup_ros_source
-	install_ros_noetic
-	install_ros_foxy
+	install_ros1
+	install_ros2
 	
 	## ROS Simulation Tools (Gazebo & Ignition)
 	sudo wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
 	echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
 	sudo apt-get update
 
-	sudo apt-get install -y ignition-fortress
-	sudo apt-get install -y ros-noetic-ros-ign
-	sudo apt-get install -y ros-noetic-gazebo-ros
-	sudo apt-get install -y ros-noetic-gazebo-ros-control
+	sudo apt-get install -y ignition-$IGNITION_VER
+	sudo apt-get install -y ros-$ROS2_DISTRO-ros-ign
+	sudo apt-get install -y ros-$ROS2_DISTRO-gazebo-ros
+	sudo apt-get install -y ros-$ROS2_DISTRO-gazebo-ros-control
 
-	sudo apt-get install -y ros-foxy-ros-ign
+	sudo apt-get install -y ros-$ROS1_DISTRO-ros-ign
 	
 	## ROS Compiler Tools
 	# Dependencies needed for building/managing ROS packages
