@@ -9,6 +9,13 @@
 #			is provided to end-users at no cost under the the MIT license.
 
 
+## One-Point Control
+MY_OSTYPE="linux-gnu"
+MY_OS="Ubuntu"
+MY_VER="18.04"
+
+
+## Support Methods
 install_system_tools() {
 	# Install System Tools & Libraries 
 	sudo apt-get install -y curl
@@ -21,6 +28,59 @@ install_system_tools() {
 	sudo apt-get install -y mesa-common-dev
 	sudo apt-get install -y libglu1-mesa-dev
 	sudo apt-get install -y tree
+}
+
+
+check_os() {
+
+	# Check OS Family
+	if [[ "$OSTYPE" == "$MY_OSTYPE" ]];
+	    then printf "  Detected OS Family:     $OSTYPE \\n"
+	else
+	    printf "  Detected OS is NOT linux. Stopping install prep.\\n"
+	    exit
+	fi
+
+
+	# Check for Linux Distribution
+	if [ -f /etc/os-release ]; then
+	    # freedesktop.org and systemd
+	    . /etc/os-release
+	    OS=$NAME
+	    VER=$VERSION_ID
+	elif type lsb_release >/dev/null 2>&1; then
+	    # linuxbase.org
+	    OS=$(lsb_release -si)
+	    VER=$(lsb_release -sr)
+	elif [ -f /etc/lsb-release ]; then
+	    # For some versions of Debian/Ubuntu without lsb_release command
+	    . /etc/lsb-release
+	    OS=$DISTRIB_ID
+	    VER=$DISTRIB_RELEASE
+	elif [ -f /etc/debian_version ]; then
+	    # Older Debian/Ubuntu/etc.
+	    OS=Debian
+	    VER=$(cat /etc/debian_version)
+	elif [ -f /etc/SuSe-release ]; then
+	    # Older SuSE/etc.
+	    ...
+	elif [ -f /etc/redhat-release ]; then
+	    # Older Red Hat, CentOS, etc.
+	    ...
+	else
+	    # Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
+	    OS=$(uname -s)
+	    VER=$(uname -r)
+	fi
+
+	printf "  Detected Linux Distro:  $OS \\n"
+	printf "  Detected Linux Version: $VER \\n"
+
+
+	# Script only valid for Ubuntu
+	if [[ "$OS" != "$MY_OS" && "$VER" != "$MY_VER" ]]; then
+	    printf "  Detected OS is NOT $MY_OS $MY_VER. Stopping install prep.\\n  This script is designed specifically for $MY_OS $MY_VER"
+	fi
 }
 
 
@@ -76,6 +136,7 @@ main() {
 
 	# Show the AIMS Lab logo so they know its the right file.
 	show_ascii_aims
+	check_os
 	sleep 1
 
 	# Ensure full script is NOT being run as root
