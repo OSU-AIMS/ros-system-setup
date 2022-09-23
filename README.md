@@ -4,9 +4,9 @@ Includes setup shell scripts for multiple Operating Systems and ROS versions.
 
 | Script Name | OS Version | ROS Versions Installed | Support Level |
 | ----------- | ---------- | ---------------------- | ------------- |
-| [setup-jammy](/setup-jammy) | Ubuntu 18.04 | ROS 1 Melodic        | EOL |
-| [setup-focal](/setup-focal) | Ubuntu 20.04 | ROS 1 Noetic<br>ROS 2 Foxy | Fully Supported |
-| [setup-bionic](/setup-bionic)| Ubuntu 22.04 | ROS 2 Humble         | Under Development |
+| [setup-bionic](/setup-bionic.sh) | Ubuntu 18.04 | ROS 1 Melodic        | EOL |
+| [setup-focal](/setup-focal.sh) | Ubuntu 20.04 | ROS 1 Noetic<br>ROS 2 Foxy | Fully Supported |
+| [setup-jammy](/setup-jammy.sh)| Ubuntu 22.04 | ROS 2 Humble         | Under Development |
 
 This procedure is maintained for standard usage by the AIMS Lab and partners. This script will install and configure the ROS middleware and dependencies. Details of the shell script’s procedure are documented by script comments.
 
