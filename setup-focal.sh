@@ -38,7 +38,7 @@ check_os() {
 
 	# Check OS Family
 	if [[ "$OSTYPE" == "$MY_OSTYPE" ]];
-	    then printf "  Detected OS Family:     $OSTYPE \\n"
+	    then printf "  Detected OS Family:     ${COLOR_G}$OSTYPE${COLOR_NC} \\n"
 	else
 	    printf "  Detected OS is NOT linux. Stopping install prep.\\n"
 	    exit
@@ -76,14 +76,16 @@ check_os() {
 	    VER=$(uname -r)
 	fi
 
-	printf "  Detected Linux Distro:  $OS \\n"
-	printf "  Detected Linux Version: $VER \\n"
+	printf "  Detected Linux Distro:  ${COLOR_G}$OS${COLOR_NC} \\n"
+	printf "  Detected Linux Version: ${COLOR_G}$VER${COLOR_NC} \\n"
 
 
 	# Script only valid for Ubuntu
 	if [[ "$OS" != "$MY_OS" && "$VER" != "$MY_VER" ]]; then
-	    printf "  Detected OS is NOT $MY_OS $MY_VER. Stopping install prep.\\n  This script is designed specifically for $MY_OS $MY_VER"
+	    printf "  Detected OS is NOT $MY_OS $MY_VER. Stopping install prep.\\n  This script is designed specifically for $MY_OS $MY_VER\\n"
 	fi
+
+	printf "\\n****************************************************************************\\n"
 }
 
 
@@ -183,7 +185,19 @@ main() {
 
 
 	# Information
-	printf "Programs will be installed as user ${COLOR_Y}'ROOT'${COLOR_NC} \\nConfigurations will be applied as user ${COLOR_Y}%s${COLOR_NC} \\n \\n" "$SUDO_USER"
+	printf "\\n  Programs will be installed as user ${COLOR_Y}root${COLOR_NC}"
+	printf "\\n"
+	while true; do
+		read -p "  Configure current user's .bashrc for ROS's Colcon arg completion? (y/n)  " -r REPLY_CONFIGURE_USER
+		case $REPLY_CONFIGURE_USER in
+			[Yy]* ) printf "  Configurations will be applied to user ${COLOR_Y}%s${COLOR_NC}\\n" "$USERNAME"; break;;
+			[Nn]* ) printf "  No user configurations will be applied.\\n" "$USERNAME"; break;;
+			* ) echo "Please answer yes 'y' or no 'n'.";;
+		esac
+	done
+
+	printf "\\n****************************************************************************\\n"
+	printf "\\n  Enter sudo privledged user's password to begin install:\\n  "
 
 
 	## OS Version
@@ -237,10 +251,9 @@ main() {
 	rosdep update
 
 	# Configure Current User
-	read -p "Configure current user's .bashrc for ROS's Colcon argument completion? " -r
-	echo
-	if [[ $REPLY =~ ^[Yy]$ ]]
+	if [[ $REPLY_CONFIGURE_USER =~ ^[Yy]$ ]]
 	then
+		printf "\\n  Applying ROS configuration to local user...\\n"
 		echo -e "# Colcon Argument Tab Completition \nsource /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" >> $HOME/.bashrc
 		source $HOME/.bashrc
 	fi
