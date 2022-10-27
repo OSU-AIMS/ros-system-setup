@@ -114,6 +114,8 @@ install_ros1() {
 	sudo apt-get install -y ros-$ROS2_DISTRO-perception
 	sudo apt-get install -y ros-$ROS2_DISTRO-moveit
 	sudo apt-get install -y ros-$ROS2_DISTRO-moveit-visual-tools
+	
+	sudo apt-get install -y ros-$ROS2_DISTRO-tf2-tools
 
 	sudo apt-get install -y ros-$ROS2_DISTRO-warehouse-ros
 	sudo apt-get install -y ros-$ROS2_DISTRO-warehouse-ros-mongo
