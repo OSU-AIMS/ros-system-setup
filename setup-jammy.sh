@@ -13,6 +13,7 @@
 MY_OSTYPE="linux-gnu"
 MY_OS="Ubuntu"
 MY_VER="22.04"
+MY_ROS_DISTRO="humble"
 
 
 ## Support Methods
@@ -74,23 +75,25 @@ check_os() {
 	    VER=$(uname -r)
 	fi
 
-	printf "  Detected Linux Distro:  $OS \\n"
-	printf "  Detected Linux Version: $VER \\n"
+	printf "  Detected Linux Distro:  ${COLOR_G}$OS ${COLOR_NC}\\n"
+	printf "  Detected Linux Version: ${COLOR_G}$VER ${COLOR_NC}\\n"
 
 
 	# Script only valid for Ubuntu
 	if [[ "$OS" != "$MY_OS" && "$VER" != "$MY_VER" ]]; then
-	    printf "  Detected OS is NOT $MY_OS $MY_VER. Stopping install prep.\\n  This script is designed specifically for $MY_OS $MY_VER"
+	    printf "  Detected OS is NOT $MY_OS $MY_VER. Stopping install prep.\\n  This script is designed specifically for ${COLOR_G}$MY_OS $MY_VER ${COLOR_NC}"
 	fi
 }
 
 
 setup_ros_source() {
-	# Setup ROS2  source
+	printf "  Setting upstream ROS 2 source:\\n"
 
-	# ROS 2
-	sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key  -o /usr/share/keyrings/ros-archive-keyring.gpg
-	echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(source /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+	# Pull ROS Keyring
+	sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+	# Add repository to apt sources list
+	echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
 	# Update Sources
 	sudo apt-get update
@@ -99,29 +102,40 @@ setup_ros_source() {
 
 
 
-install_ros2_humble() {
+install_ros2() {
 
-	sudo apt-get install -y ros-humble-desktop
+	# Full Desktop Install. Ref https://ros.org/reps/rep-2001.html
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-desktop-full
+
+	# Developer Help
 	sudo apt-get install -y python3-colcon-common-extensions
 	sudo apt-get install -y python3-argcomplete
 	
-	sudo apt-get install -y ros-humble-xacro
-	sudo apt-get install -y ros-humble-moveit
-	sudo apt-get install -y ros-humble-octomap-ros
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-xacro
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-moveit
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-octomap-ros
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-testing
 
 
-	sudo apt-get install -y ros-humble-image-publisher
-	# sudo apt-get install -y ros-humble-realsense2-camera			# Unreleased for Humble
-	# sudo apt-get install -y ros-humble-realsense2-description		# Unreleased for Humble
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-image-publisher
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-realsense2-camera
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-realsense2-description
+
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-ros-industrial-cmake-boilerplate
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-ros1-bridge
 	  
-	sudo apt-get install -y ros-humble-ros2-control
-	sudo apt-get install -y ros-humble-ros2-controllers
-	sudo apt-get install -y ros-humble-joint-state-publisher
-	sudo apt-get install -y ros-humble-joint-state-publisher-gui
-	# sudo apt-get install -y ros-humble-joint-state-controller		# Unreleased for Humble
-	sudo apt-get install -y ros-humble-position-controllers
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-ros2-control
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-ros2-controllers
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-joint-state-publisher
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-joint-state-publisher-gui
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-position-controllers
 	
-	# sudo apt-get install -y ros-humble-ifopt						# Unreleased for Humble
+	# sudo apt-get install -y ros-$MY_ROS_DISTRO-ifopt						# Unreleased for Humble
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-ruckig
+
+	## microROS
+
+
 }
 	
 
@@ -156,27 +170,39 @@ main() {
 	sudo locale-gen en_US en_US.UTF-8
 	sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 	export LANG=en_US.UTF-8
+	locale 
 	
 	## Run Installer	
 	install_system_tools
 	setup_ros_source
-	install_ros_humble
+	install_ros2
+
+	## Tool: Tesseract Ignition
+	sudo snap install tesseract-ignition
+
+	## Tool: Code Coverage
+	sudo apt-get install -y lcov
 	
-	## ROS Simulation Tools (Ignition)
+	## ROS Simulation Tools (Gazebo/Ignition)
 	sudo wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
 	echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
-	sudo apt-get update
 
+	sudo apt-get update
 	sudo apt-get install -y ignition-fortress
-	sudo apt-get install -y ros-humble-ros-ign
+
+	sudo apt-get install -y ros-$MY_ROS_DISTRO-ros-gz
+	# sudo apt-get install -y ros-$MY_ROS_DISTRO-ros-ign   #For Humble, _ign is a shim metapackage that points to the _gz meta package
+
+	## ROS Dev Tools (https://github.com/ros-infrastructure/infra-variants)
+	sudo apt-get install -y ros-dev-tools
+	sudo apt-get install -y ros-build-essential
 	
-	## ROS Compiler Tools
 	# Dependencies needed for building/managing ROS packages
-	sudo apt-get install -y python3-rosdep
+	sudo apt-get install -y python3-rosdep	#(duplicated from ros-dev-tools)
 	sudo apt-get install -y python3-osrf-pycommon
-	sudo apt-get install -y python3-wstool
-	sudo apt-get install -y python3-vcstool
-	sudo apt-get install -y build-essential
+	sudo apt-get install -y python3-wstool 
+	sudo apt-get install -y python3-vcstool	#(duplicated from ros-dev-tools)
+	sudo apt-get install -y build-essential #(duplicated from ros-build-essential)
 
 	# Setup ROSdep
 	sudo rosdep init
