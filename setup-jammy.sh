@@ -24,12 +24,15 @@ install_system_tools() {
   	sudo apt-get install -y gnupg2
   	sudo apt-get install -y lsb-release
 	sudo apt-get install -y git
-	sudo apt-get install -y meld
+	sudo apt-get install -y tree
 	sudo apt-get install -y build-essential
 	sudo apt-get install -y libfontconfig1
 	sudo apt-get install -y mesa-common-dev
 	sudo apt-get install -y libglu1-mesa-dev
-	sudo apt-get install -y tree
+
+	# Useful Dev Apps
+	sudo apt-get install -y meld
+	sudo apt-get install -y terminator
 }
 
 
